@@ -80,12 +80,12 @@ public class PlayerController : MonoBehaviour
         }
 
         //attack inputs
-        if (Input.GetMouseButtonDown(0) && !isAttacking)
+        if (Input.GetMouseButtonDown(0) && !isAttacking && !isSiphoning)
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.15f);
             StartCoroutine(MeleeCooldown());
         }
-        if (Input.GetMouseButtonDown(1) && !isAttacking)
+        if (Input.GetMouseButtonDown(1) && !isSiphoning)
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.1f);
             StartCoroutine(RangeCooldown());
@@ -95,12 +95,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isSiphoning = true;
-            isAttacking = true;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isSiphoning = false;
-            isAttacking = false;
         }
     }
 
