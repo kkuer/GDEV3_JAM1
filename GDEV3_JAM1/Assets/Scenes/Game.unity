@@ -894,9 +894,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vitality: 100
   isSiphoning: 0
+  isAttacking: 0
+  playerMesh: {fileID: 928143388}
   cam: {fileID: 330585545}
-  vitalityDecreaseRate: 3
-  vitalityIncreaseRate: 4
+  defaultVitalityDecreaseRate: 0
+  defaultVitalityIncreaseRate: 0
+  moveSpeed: 8
+  meleeDuration: 0.4
+  rangeDuration: 0.1
 --- !u!54 &1679665377
 Rigidbody:
   m_ObjectHideFlags: 0

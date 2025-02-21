@@ -1,25 +1,31 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
     public float vitality = 100;
     public bool isSiphoning;
+    public bool isAttacking;
 
-    private GameObject player;
+    public GameObject playerMesh;
     private Rigidbody rb;
 
     public Camera cam;
 
-    [SerializeField] private float vitalityDecreaseRate;
-    [SerializeField] private float vitalityIncreaseRate;
+    [SerializeField] private float defaultVitalityDecreaseRate;
+    [SerializeField] private float defaultVitalityIncreaseRate;
+
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float meleeDuration;
+    [SerializeField] private float rangeDuration;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         isSiphoning = false;
-        player = this.gameObject;
-        rb = player.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -27,30 +33,46 @@ public class PlayerController : MonoBehaviour
         //update vitality
         if (isSiphoning && vitality <= 100f)
         {
-            vitality += Time.deltaTime * vitalityIncreaseRate;
+            vitality += Time.deltaTime * defaultVitalityIncreaseRate;
         }
         else if (!isSiphoning && vitality >= 0f)
         {
-            vitality -= Time.deltaTime * vitalityDecreaseRate;
+            vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
         }
+
+        //input
+        Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
     }
 
     void Update()
     {
         //player aim
-        if (player)
+        if (playerMesh)
         {
             trackMouse();
+        }
+
+        //attack inputs
+        if (Input.GetMouseButtonDown(0) && !isAttacking)
+        {
+            StartCoroutine(meleeCooldown());
+        }
+        if (Input.GetMouseButtonDown(1) && !isAttacking)
+        {
+            StartCoroutine(rangeCooldown());
         }
 
         //vitality inputs
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isSiphoning = true;
+            isAttacking = true;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isSiphoning = false;
+            isAttacking = false;
         }
     }
 
@@ -64,7 +86,27 @@ public class PlayerController : MonoBehaviour
         if (didHit)
         {
             Vector3 hitPos = camRay.GetPoint(distance);
-            player.transform.LookAt(hitPos, Vector3.up);
+            playerMesh.transform.LookAt(hitPos, Vector3.up);
         }
+    }
+
+    IEnumerator meleeCooldown()
+    {
+        isAttacking = true;
+
+        //handle attack logic
+
+        yield return new WaitForSeconds(meleeDuration);
+        isAttacking = false;
+    }
+
+    IEnumerator rangeCooldown()
+    {
+        isAttacking = true;
+
+        //handle attack logic
+
+        yield return new WaitForSeconds(rangeDuration);
+        isAttacking = false;
     }
 }
