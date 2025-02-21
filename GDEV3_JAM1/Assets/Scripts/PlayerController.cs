@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool playerWeak;
+
     public float vitality = 100;
     public bool isSiphoning;
     public bool isAttacking;
@@ -21,10 +23,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float meleeDuration;
     [SerializeField] private float rangeDuration;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject VFX_SLASH;
+
     void Start()
     {
+        //set startup variables
         isSiphoning = false;
+        playerWeak = false;
+        isAttacking = false;
+
+        //get components
         rb = GetComponent<Rigidbody>();
     }
 
@@ -38,6 +46,15 @@ public class PlayerController : MonoBehaviour
         else if (!isSiphoning && vitality >= 0f)
         {
             vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
+        }
+
+        if(vitality <= 0f)
+        {
+            playerWeak = true;
+        }
+        else if (vitality > 0)
+        {
+            playerWeak = false;
         }
 
         //input
@@ -93,10 +110,12 @@ public class PlayerController : MonoBehaviour
     IEnumerator meleeCooldown()
     {
         isAttacking = true;
+        VFX_SLASH.SetActive(true);
 
         //handle attack logic
 
         yield return new WaitForSeconds(meleeDuration);
+        VFX_SLASH.SetActive(false);
         isAttacking = false;
     }
 
