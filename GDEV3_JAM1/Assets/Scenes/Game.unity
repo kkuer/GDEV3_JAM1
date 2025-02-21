@@ -895,6 +895,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1610085761}
   - component: {fileID: 1610085760}
+  - component: {fileID: 1610085762}
+  - component: {fileID: 1610085763}
   m_Layer: 0
   m_Name: CM_CAM_01
   m_TagString: Untagged
@@ -960,6 +962,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
+--- !u!114 &1610085762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610085759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &1610085763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610085759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c03e7b5ee5e9d743b1308a2177c4822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1679665371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,6 +1050,10 @@ MonoBehaviour:
   meleeDuration: 0.4
   rangeDuration: 0.1
   VFX_SLASH: {fileID: 1893686824}
+  globalVolume: {fileID: 832575518}
+  volumeProfiles:
+  - {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
+  - {fileID: 11400000, guid: 886859eb9f890a24db080da1cb532989, type: 2}
 --- !u!54 &1679665377
 Rigidbody:
   m_ObjectHideFlags: 0

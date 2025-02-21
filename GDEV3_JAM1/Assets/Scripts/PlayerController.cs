@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rangeDuration;
 
     public GameObject VFX_SLASH;
+
+
+    public Volume globalVolume;
+    public List<VolumeProfile> volumeProfiles = new List<VolumeProfile>();
+    //gameplay  [0]
+    //weak      [1]
 
     void Start()
     {
@@ -51,10 +58,12 @@ public class PlayerController : MonoBehaviour
         if(vitality <= 0f)
         {
             playerWeak = true;
+            UpdateVolume(volumeProfiles[1]);
         }
         else if (vitality > 0)
         {
             playerWeak = false;
+            UpdateVolume(volumeProfiles[0]);
         }
 
         //input
@@ -67,17 +76,19 @@ public class PlayerController : MonoBehaviour
         //player aim
         if (playerMesh)
         {
-            trackMouse();
+            TrackMouse();
         }
 
         //attack inputs
         if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
-            StartCoroutine(meleeCooldown());
+            ShakeBehaviour._instance.shakeCam(2f, 0.15f);
+            StartCoroutine(MeleeCooldown());
         }
         if (Input.GetMouseButtonDown(1) && !isAttacking)
         {
-            StartCoroutine(rangeCooldown());
+            ShakeBehaviour._instance.shakeCam(2f, 0.1f);
+            StartCoroutine(RangeCooldown());
         }
 
         //vitality inputs
@@ -93,7 +104,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void trackMouse()
+    public void TrackMouse()
     {
         Plane mousePlane = new Plane(Vector3.up, transform.position);
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
@@ -107,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator meleeCooldown()
+    IEnumerator MeleeCooldown()
     {
         isAttacking = true;
         VFX_SLASH.SetActive(true);
@@ -119,7 +130,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-    IEnumerator rangeCooldown()
+    IEnumerator RangeCooldown()
     {
         isAttacking = true;
 
@@ -127,5 +138,10 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(rangeDuration);
         isAttacking = false;
+    }
+
+    private void UpdateVolume(VolumeProfile profile)
+    {
+        globalVolume.profile = profile;
     }
 }
