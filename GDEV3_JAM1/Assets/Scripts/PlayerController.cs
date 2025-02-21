@@ -40,10 +40,7 @@ public class PlayerController : MonoBehaviour
         //player aim
         if (player)
         {
-            Vector3 point = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
-            float t = cam.transform.position.y / (cam.transform.position.y - point.y);
-            Vector3 finalPoint = new Vector3(t * (point.x - cam.transform.position.x) + cam.transform.position.x, 1, t * (point.z - cam.transform.position.z) + cam.transform.position.z);
-            player.transform.LookAt(finalPoint, Vector3.up);
+            trackMouse();
         }
 
         //vitality inputs
@@ -54,6 +51,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isSiphoning = false;
+        }
+    }
+
+    public void trackMouse()
+    {
+        Plane mousePlane = new Plane(Vector3.up, transform.position);
+        Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
+
+        bool didHit = mousePlane.Raycast(camRay, out float distance);
+
+        if (didHit)
+        {
+            Vector3 hitPos = camRay.GetPoint(distance);
+            player.transform.LookAt(hitPos, Vector3.up);
         }
     }
 }
