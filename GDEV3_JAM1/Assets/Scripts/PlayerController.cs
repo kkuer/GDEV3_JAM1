@@ -24,7 +24,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float meleeDuration;
     [SerializeField] private float rangeDuration;
 
+    [SerializeField] private float swingSpeed;
+
+    [SerializeField] private Quaternion bladeStartRotation;
+    [SerializeField] private Quaternion bladeTargetRotation;
+
     public GameObject VFX_SLASH;
+
+    public GameObject bladePrefab;
+    public Transform bladePivotPoint;
 
 
     public Volume globalVolume;
@@ -84,6 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.15f);
             StartCoroutine(MeleeCooldown());
+
         }
         if (Input.GetMouseButtonDown(1) && !isSiphoning)
         {
@@ -118,23 +127,40 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator MeleeCooldown()
     {
+        //state logic
         isAttacking = true;
-        VFX_SLASH.SetActive(true);
 
-        //handle attack logic
+        //visuals
+        GameObject slash = Instantiate(VFX_SLASH, bladePivotPoint.position, bladePivotPoint.rotation);
+        GameObject blade = Instantiate(bladePrefab, bladePivotPoint.position, Quaternion.Euler(0f, bladePivotPoint.rotation.y, 0f), bladePivotPoint);
+        blade.transform.rotation = Quaternion.Lerp(bladeStartRotation, bladeTargetRotation, Time.deltaTime * swingSpeed);
 
+        //attack logic
+
+        //wait and reset
         yield return new WaitForSeconds(meleeDuration);
-        VFX_SLASH.SetActive(false);
+
+        Destroy(slash);
+        Destroy(blade);
+
         isAttacking = false;
     }
 
     IEnumerator RangeCooldown()
     {
+        //state logic
         isAttacking = true;
+
+        //visuals
+        //partiles enable here
 
         //handle attack logic
 
+        //wait and reset
         yield return new WaitForSeconds(rangeDuration);
+
+
+        //partiles disable here
         isAttacking = false;
     }
 
