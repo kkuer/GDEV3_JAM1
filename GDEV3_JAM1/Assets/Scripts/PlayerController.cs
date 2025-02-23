@@ -26,13 +26,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float swingSpeed;
 
-    [SerializeField] private Quaternion bladeStartRotation;
     [SerializeField] private Quaternion bladeTargetRotation;
 
     public GameObject VFX_SLASH;
-
+    public GameObject bladeHolstered;
     public GameObject bladePrefab;
     public Transform bladePivotPoint;
+
+
+    public GameObject currentBlade;
 
 
     public Volume globalVolume;
@@ -74,6 +76,12 @@ public class PlayerController : MonoBehaviour
             UpdateVolume(volumeProfiles[0]);
         }
 
+        //blade swing
+        if (currentBlade && isAttacking)
+        {
+            currentBlade.transform.localRotation = Quaternion.Lerp(currentBlade.transform.localRotation, bladeTargetRotation, Time.deltaTime * swingSpeed);
+        }
+
         //input
         Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
@@ -92,7 +100,6 @@ public class PlayerController : MonoBehaviour
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.15f);
             StartCoroutine(MeleeCooldown());
-
         }
         if (Input.GetMouseButtonDown(1) && !isSiphoning)
         {
@@ -131,9 +138,12 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
 
         //visuals
+
         GameObject slash = Instantiate(VFX_SLASH, bladePivotPoint.position, bladePivotPoint.rotation);
-        GameObject blade = Instantiate(bladePrefab, bladePivotPoint.position, Quaternion.Euler(0f, bladePivotPoint.rotation.y, 0f), bladePivotPoint);
-        blade.transform.rotation = Quaternion.Lerp(bladeStartRotation, bladeTargetRotation, Time.deltaTime * swingSpeed);
+        GameObject blade = Instantiate(bladePrefab, bladePivotPoint.position, playerMesh.transform.localRotation, bladePivotPoint);
+        bladeTargetRotation = Quaternion.Euler(0f, bladePivotPoint.transform.localRotation.y + 90f, 0f);
+        currentBlade = blade;
+        bladeHolstered.SetActive(false);
 
         //attack logic
 
@@ -141,7 +151,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(meleeDuration);
 
         Destroy(slash);
+        currentBlade = null;
         Destroy(blade);
+        bladeHolstered.SetActive(true);
 
         isAttacking = false;
     }
