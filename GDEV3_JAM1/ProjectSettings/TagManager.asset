@@ -15,8 +15,8 @@ TagManager:
   - Bounds
   - Enemy
   - Environment
-  - 
-  - 
+  - ProjectilePlayer
+  - BladePlayer
   - 
   - 
   - 

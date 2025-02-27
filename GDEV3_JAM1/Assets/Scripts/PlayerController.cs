@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     public GameObject bladePrefab;
     public Transform bladePivotPoint;
 
+    public GameObject projectilePrefab;
+
 
     public GameObject currentBlade;
 
@@ -99,12 +101,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isAttacking && !isSiphoning)
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.15f);
-            StartCoroutine(MeleeCooldown());
+            StartCoroutine(meleeAttack());
         }
         if (Input.GetMouseButtonDown(1) && !isSiphoning)
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.1f);
-            StartCoroutine(RangeCooldown());
+            StartCoroutine(rangedAttack());
         }
 
         //vitality inputs
@@ -132,7 +134,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator MeleeCooldown()
+    IEnumerator meleeAttack()
     {
         //state logic
         isAttacking = true;
@@ -140,12 +142,15 @@ public class PlayerController : MonoBehaviour
         //visuals
 
         GameObject slash = Instantiate(VFX_SLASH, bladePivotPoint.position, bladePivotPoint.rotation);
-        GameObject blade = Instantiate(bladePrefab, bladePivotPoint.position, playerMesh.transform.localRotation, bladePivotPoint);
-        bladeTargetRotation = Quaternion.Euler(0f, bladePivotPoint.transform.localRotation.y + 90f, 0f);
+        GameObject blade = Instantiate(bladePrefab, Vector3.zero, Quaternion.identity, bladePivotPoint);
+        blade.transform.localPosition = Vector3.zero;
+        blade.transform.localRotation = Quaternion.identity;
+        bladeTargetRotation = Quaternion.Euler(0f, 120f, 0f);
         currentBlade = blade;
         bladeHolstered.SetActive(false);
 
         //attack logic
+
 
         //wait and reset
         yield return new WaitForSeconds(meleeDuration);
@@ -158,7 +163,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-    IEnumerator RangeCooldown()
+    IEnumerator rangedAttack()
     {
         //state logic
         isAttacking = true;
@@ -167,6 +172,8 @@ public class PlayerController : MonoBehaviour
         //partiles enable here
 
         //handle attack logic
+        GameObject projectile = Instantiate(projectilePrefab, bladePivotPoint.position, playerMesh.transform.localRotation);
+        Destroy(projectile, 10f);
 
         //wait and reset
         yield return new WaitForSeconds(rangeDuration);
