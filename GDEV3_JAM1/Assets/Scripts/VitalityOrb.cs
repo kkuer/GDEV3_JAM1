@@ -1,14 +1,21 @@
 using System.Collections;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class VitalityOrb : MonoBehaviour
 {
     public float storedVitality = 20;
     private float depletionRate;
     public bool siphonable;
+    public bool siphoning;
 
     public GameObject expireParticles;
+
+    private ParticleSystem siphoningParticles;
+    private PlayerController player;
 
     public enum orbType
     {
@@ -22,6 +29,15 @@ public class VitalityOrb : MonoBehaviour
     {
         siphonable = false;
         StartCoroutine(Lifetime());
+
+        siphoningParticles = GetComponent<ParticleSystem>();
+
+        player = PlayerController._playerInstance;
+        CapsuleCollider playerCol = player.GetComponentInParent<CapsuleCollider>();
+        if (playerCol != null)
+        {
+            siphoningParticles.trigger.AddCollider(playerCol);
+        }
     }
 
     private void FixedUpdate()
@@ -35,6 +51,21 @@ public class VitalityOrb : MonoBehaviour
             Instantiate(expireParticles, gameObject.transform.position, Quaternion.identity);
             //orb disappear sfx
             Destroy(gameObject);
+        }
+
+        if (player.isSiphoning)
+        {
+            if (siphoningParticles != null && !siphoningParticles.isPlaying)
+            {
+                siphoningParticles.Play();
+            }
+        }
+        else if (!player.isSiphoning)
+        {
+            if (siphoningParticles != null && siphoningParticles.isPlaying)
+            {
+                siphoningParticles.Stop();
+            }
         }
     }
 
@@ -56,7 +87,7 @@ public class VitalityOrb : MonoBehaviour
         storedVitality -= Time.deltaTime * depletionRate;
         gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, Time.deltaTime * (depletionRate/10));
 
-        //orb siphoning sfx and particles
+        //orb siphoning sfx
     }
 
     IEnumerator Lifetime()

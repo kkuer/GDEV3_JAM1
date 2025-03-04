@@ -91,7 +91,6 @@ public class Enemy : MonoBehaviour
                     }
                 }
             }
-            
         }
         else if (projectile != null)
         {

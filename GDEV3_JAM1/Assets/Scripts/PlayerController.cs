@@ -9,6 +9,8 @@ using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController _playerInstance {  get; private set; }
+
     public bool playerWeak;
     public bool playerBuffed;
 
@@ -50,9 +52,20 @@ public class PlayerController : MonoBehaviour
     public List<VolumeProfile> volumeProfiles = new List<VolumeProfile>();
     //gameplay  [0]
     //weak      [1]
+    //buffed    [2]
 
     void Start()
     {
+        //set Player instance
+        if (_playerInstance == null)
+        {
+            _playerInstance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         //set startup variables
         isSiphoning = false;
         playerWeak = false;
