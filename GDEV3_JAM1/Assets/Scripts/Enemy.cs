@@ -9,6 +9,10 @@ public class Enemy : MonoBehaviour
     private float canTakeDamage;
 
     public GameManager gameManager;
+
+    public GameObject essenceParticles;
+    public GameObject vitalityOrb;
+
     public enum enemyType
     {
         Standard,
@@ -43,9 +47,23 @@ public class Enemy : MonoBehaviour
     public float takeDamage(float damageToTake)
     {
         health -= damageToTake;
+
+        //damage particles
+
+
         if (health < 0f)
         {
             health = 0f;
+            //death particles
+
+
+            //essence particles
+            Instantiate(essenceParticles, gameObject.transform.position, Quaternion.identity);
+
+            //spawn vitality orb
+            Instantiate(vitalityOrb, gameObject.transform.position, Quaternion.identity);
+
+            Destroy(gameObject);
         }
         return health;
     }
@@ -68,7 +86,7 @@ public class Enemy : MonoBehaviour
                 {
                     if (hit != gameObject)
                     {
-                        takeDamage(15f);
+                        takeDamage(blade.baseDamage);
                         gameManager.addScore(5f);
                     }
                 }

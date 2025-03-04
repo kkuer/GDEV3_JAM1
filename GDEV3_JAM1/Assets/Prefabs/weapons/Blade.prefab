@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bladeHits: []
-  baseDamage: 15
+  baseDamage: 20
 --- !u!65 &1888512555273701175
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -670,7 +670,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.36, z: 2.5}
+  m_Size: {x: 1, y: 0.36, z: 3.25}
   m_Center: {x: 0.2, y: 0, z: 1}
 --- !u!54 &510021821792688561
 Rigidbody:

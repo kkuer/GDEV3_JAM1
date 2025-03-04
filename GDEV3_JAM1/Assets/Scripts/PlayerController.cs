@@ -3,14 +3,20 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
+using System;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
     public bool playerWeak;
+    public bool playerBuffed;
 
     public float vitality = 100;
     public bool isSiphoning;
     public bool isAttacking;
+
+    public float siphonRadius;
 
     public GameObject playerMesh;
     private Rigidbody rb;
@@ -21,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float defaultVitalityIncreaseRate;
 
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float buffedMoveSpeed;
+    [SerializeField] private float weakMoveSpeed;
     [SerializeField] private float meleeDuration;
     [SerializeField] private float rangeDuration;
 
@@ -34,10 +42,9 @@ public class PlayerController : MonoBehaviour
     public Transform bladePivotPoint;
 
     public GameObject projectilePrefab;
-
-
     public GameObject currentBlade;
 
+    public Slider vitalitySlider;
 
     public Volume globalVolume;
     public List<VolumeProfile> volumeProfiles = new List<VolumeProfile>();
@@ -57,6 +64,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //update UI
+        vitalitySlider.value = vitality / 100;
+
         //update vitality
         if (isSiphoning && vitality <= 100f)
         {
@@ -67,15 +77,33 @@ public class PlayerController : MonoBehaviour
             vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
         }
 
-        if(vitality <= 0f)
+        if (vitality <= 0f)
         {
             playerWeak = true;
             UpdateVolume(volumeProfiles[1]);
         }
-        else if (vitality > 0)
+        else if (vitality > 0f && vitality >= 33.4f)
         {
             playerWeak = false;
+            playerBuffed = false;
             UpdateVolume(volumeProfiles[0]);
+        }
+        else if (vitality > 0f && vitality <= 33.3f)
+        {
+            playerBuffed = true;
+        }
+
+        if (playerWeak)
+        {
+            moveSpeed = weakMoveSpeed;
+        }
+        else if (!playerWeak && !playerBuffed)
+        {
+            moveSpeed = 500f;
+        }
+        else if (!playerWeak && playerBuffed)
+        {
+            moveSpeed = buffedMoveSpeed;
         }
 
         //blade swing
@@ -86,7 +114,8 @@ public class PlayerController : MonoBehaviour
 
         //input
         Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
+        rb.linearVelocity = inputMovement * Time.deltaTime * moveSpeed;
+        //transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
     }
 
     void Update()
@@ -110,9 +139,11 @@ public class PlayerController : MonoBehaviour
         }
 
         //vitality inputs
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            isSiphoning = true;
+            //check orb distance
+            //isSiphoning = true;
+            siphonByDistance();
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -186,5 +217,31 @@ public class PlayerController : MonoBehaviour
     private void UpdateVolume(VolumeProfile profile)
     {
         globalVolume.profile = profile;
+    }
+
+    private void siphonByDistance()
+    {
+        Collider[] nearbyOrbs = Physics.OverlapSphere(gameObject.transform.position, siphonRadius);
+
+        bool foundSiphonableOrb = false;
+
+        foreach (var collider in nearbyOrbs)
+        {
+            VitalityOrb orb = collider.GetComponentInParent<VitalityOrb>();
+
+            if (orb != null && orb.siphonable)
+            {
+                foundSiphonableOrb = true;
+                orb.Deplete();
+            }
+        }
+        if (foundSiphonableOrb)
+        {
+            isSiphoning = true;
+        }
+        else
+        {
+            isSiphoning = false;
+        }
     }
 }
