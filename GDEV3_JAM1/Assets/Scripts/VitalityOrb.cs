@@ -28,7 +28,7 @@ public class VitalityOrb : MonoBehaviour
     {
         if (siphonable)
         {
-            gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, Time.deltaTime * 0.5f);
+            gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, Time.deltaTime * 0.25f);
         }
         if (gameObject.transform.localScale.z <= 0.1f)
         {
