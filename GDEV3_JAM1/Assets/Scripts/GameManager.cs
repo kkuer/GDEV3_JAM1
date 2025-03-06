@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
 
         //allow vitality score adding
         vitalityScoreAdjusted = false;
+
+        //allow enemies to spawn
+        enemySpawnable = true;
     }
 
     private void Update()
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
             //spawn enemies
             if (enemySpawnable && gameActive)
             {
-
+                StartCoroutine(spawnEnemyTest());
             }
 
             //add current vitality to score
@@ -154,7 +157,10 @@ public class GameManager : MonoBehaviour
 
         GameObject randomEnemy = enemies[Random.Range(0, enemies.Count)];
         GameObject randomSpawn = spawnPositions[Random.Range(0, spawnPositions.Count)];
-        yield return new WaitForSeconds(2f);
+
+        GameObject newEnemy = Instantiate(randomEnemy, randomSpawn.transform.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(3f);
 
         enemySpawnable = true;
     }

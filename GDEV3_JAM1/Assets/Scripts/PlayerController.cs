@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     public state playerState;
 
+    public int nearbyOrbsAmount;
+
     private void Awake()
     {
         //set Player instance
@@ -102,8 +104,6 @@ public class PlayerController : MonoBehaviour
         updateVitality();
         managePlayerState();
 
-       
-
         //player aim
         if (playerMesh)
         {
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
             ShakeBehaviour._instance.shakeCam(2f, 0.15f);
             StartCoroutine(meleeAttack());
         }
-        if (Input.GetMouseButtonDown(1) && !isSiphoning)
+        if (Input.GetMouseButtonDown(1) && !isAttacking && !isSiphoning)
         {
             ShakeBehaviour._instance.shakeCam(2f, 0.1f);
             StartCoroutine(rangedAttack());
@@ -164,9 +164,6 @@ public class PlayerController : MonoBehaviour
         currentBlade = blade;
         bladeHolstered.SetActive(false);
 
-        //attack logic
-
-
         //wait and reset
         yield return new WaitForSeconds(meleeDuration);
 
@@ -209,6 +206,8 @@ public class PlayerController : MonoBehaviour
 
         bool foundSiphonableOrb = false;
 
+        int orbsInRange = 0;
+
         foreach (var collider in nearbyOrbs)
         {
             VitalityOrb orb = collider.GetComponentInParent<VitalityOrb>();
@@ -216,6 +215,7 @@ public class PlayerController : MonoBehaviour
             if (orb != null && orb.siphonable)
             {
                 foundSiphonableOrb = true;
+                orbsInRange++;
                 orb.Deplete();
             }
         }
@@ -227,6 +227,8 @@ public class PlayerController : MonoBehaviour
         {
             isSiphoning = false;
         }
+
+        nearbyOrbsAmount = orbsInRange;
     }
     
     private void OnTriggerStay(Collider other)
@@ -248,7 +250,8 @@ public class PlayerController : MonoBehaviour
         //update vitality
         if (isSiphoning && vitality <= 100f)
         {
-            vitality += Time.deltaTime * defaultVitalityIncreaseRate;
+            Debug.Log(nearbyOrbsAmount);
+            vitality += Time.deltaTime * (nearbyOrbsAmount * defaultVitalityIncreaseRate);
         }
         else if (!isSiphoning && vitality >= 0f)
         {
@@ -270,6 +273,10 @@ public class PlayerController : MonoBehaviour
         {
             playerState = state.Buffed;
             UpdateVolume(volumeProfiles[2]);
+        }
+        else if (vitality >= 100f)
+        {
+            vitality = 100f;
         }
     }
 

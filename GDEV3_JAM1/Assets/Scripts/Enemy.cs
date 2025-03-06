@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
+using Unity.Cinemachine;
 
 public class Enemy : MonoBehaviour
 {
@@ -21,6 +23,12 @@ public class Enemy : MonoBehaviour
     public GameObject vitalityOrb;
 
     public Slider healthSlider;
+
+    NavMeshAgent enemyNavAgent;
+
+    public Transform camToLookAt;
+
+    public Transform healthBar;
 
     public enum enemyType
     {
@@ -60,6 +68,10 @@ public class Enemy : MonoBehaviour
             healthSlider.maxValue = health / 100;
             scoreToAdd = 15;
         }
+
+        enemyNavAgent = GetComponent<NavMeshAgent>();
+
+        camToLookAt = Camera.main.transform;
     }
 
     private void Update()
@@ -70,7 +82,14 @@ public class Enemy : MonoBehaviour
             healthSlider.value = health / 100;
         }
         
-        //navmesh here
+        //navmesh
+        if (player != null)
+        {
+            enemyNavAgent.SetDestination(player.gameObject.transform.position);
+        }
+
+        //align healthbar with camera
+        healthBar.LookAt(camToLookAt);
     }
 
     public float takeDamage(float damageToTake)
