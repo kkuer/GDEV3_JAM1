@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Collections;
 
 public class ShakeBehaviour : MonoBehaviour
 {
@@ -10,7 +11,14 @@ public class ShakeBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _instance = this;
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         cam = GetComponent<CinemachineCamera>();
     }
 
@@ -34,5 +42,37 @@ public class ShakeBehaviour : MonoBehaviour
                 perlin.AmplitudeGain = 0f;
             }
         }
+    }
+
+    public IEnumerator screenFlash(Color color)
+    {
+        Debug.Log("Flashed");
+        //set image color
+
+        //turn on middle
+
+        yield return new WaitForSeconds(0.05f);
+
+        //turn on outside
+
+        yield return new WaitForSeconds(0.05f);
+
+        //delete middle
+
+        yield return new WaitForSeconds(0.05f);
+
+        //delete outside
+    }
+
+    public IEnumerator quickFlash(Color color)
+    {
+        Debug.Log("FlashedQuick");
+        //set image color
+
+        //turn on
+
+        yield return new WaitForSeconds(0.05f);
+
+        //turn off
     }
 }
