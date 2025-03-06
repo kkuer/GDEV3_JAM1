@@ -1,17 +1,26 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float health;
-    private float damage;
-    private float movespeed;
 
-    private float canTakeDamage;
+    public float damage;
+    [SerializeField] private float damageCooldown;
+
+    private float movespeed;
+    [SerializeField] private int scoreToAdd;
+
+    public bool canDealDamage;
 
     public GameManager gameManager;
+    public PlayerController player; 
 
     public GameObject essenceParticles;
     public GameObject vitalityOrb;
+
+    public Slider healthSlider;
 
     public enum enemyType
     {
@@ -23,6 +32,9 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        player = PlayerController._playerInstance;
+        canDealDamage = true;
+
         //find game manager instance
         if (GameManager._gmInstance != null)
         {
@@ -30,18 +42,35 @@ public class Enemy : MonoBehaviour
         }
 
         //set stats
-        if(type == enemyType.Standard)
+        if (type == enemyType.Standard)
         {
             health = 50;
+            healthSlider.maxValue = health / 100;
+            scoreToAdd = 25;
         }
         else if (type == enemyType.Heavy)
         {
             health = 100;
+            healthSlider.maxValue = health / 100;
+            scoreToAdd = 50;
         }
         else if (type == enemyType.Light)
         {
             health = 25;
+            healthSlider.maxValue = health / 100;
+            scoreToAdd = 15;
         }
+    }
+
+    private void Update()
+    {
+        //update healthbar
+        if (health > 0)
+        {
+            healthSlider.value = health / 100;
+        }
+        
+        //navmesh here
     }
 
     public float takeDamage(float damageToTake)
@@ -63,6 +92,10 @@ public class Enemy : MonoBehaviour
             //spawn vitality orb
             Instantiate(vitalityOrb, gameObject.transform.position, Quaternion.identity);
 
+            //add score
+            gameManager.addScore(scoreToAdd);
+
+            //delete enemy
             Destroy(gameObject);
         }
         return health;
@@ -77,8 +110,20 @@ public class Enemy : MonoBehaviour
             if (blade.bladeHits.Count == 0)
             {
                 blade.bladeHits.Add(gameObject);
-                takeDamage(blade.baseDamage);
-                gameManager.addScore(5f);
+
+                if (player.playerBuffed)
+                {
+                    takeDamage(blade.buffedDamage);
+                }
+                else if (player.playerWeak)
+                {
+                    takeDamage(blade.weakDamage);
+                }
+                else if (!player.playerBuffed && !player.playerWeak)
+                {
+                    takeDamage(blade.baseDamage);
+                }
+                gameManager.addScore(25);
             }
             else if (blade.bladeHits.Count >= 1)
             {
@@ -86,17 +131,46 @@ public class Enemy : MonoBehaviour
                 {
                     if (hit != gameObject)
                     {
-                        takeDamage(blade.baseDamage);
-                        gameManager.addScore(5f);
+                        if (player.playerBuffed)
+                        {
+                            takeDamage(blade.buffedDamage);
+                        }
+                        else if (player.playerWeak)
+                        {
+                            takeDamage(blade.weakDamage);
+                        }
+                        else if (!player.playerBuffed && !player.playerWeak)
+                        {
+                            takeDamage(blade.baseDamage);
+                        }
+                        gameManager.addScore(25);
                     }
                 }
             }
         }
         else if (projectile != null)
         {
-            takeDamage(5f);
-            gameManager.addScore(1f);
+            if (player.playerBuffed)
+            {
+                takeDamage(projectile.buffedDamage);
+            }
+            else if (player.playerWeak)
+            {
+                takeDamage(projectile.weakDamage);
+            }
+            else if (!player.playerBuffed && !player.playerWeak)
+            {
+                takeDamage(projectile.baseDamage);
+            }
+            gameManager.addScore(5);
             Destroy(projectile.gameObject);
         }
+    }
+
+    public IEnumerator dealDamage()
+    {
+        canDealDamage = false;
+        yield return new WaitForSeconds(damageCooldown);
+        canDealDamage = true;
     }
 }

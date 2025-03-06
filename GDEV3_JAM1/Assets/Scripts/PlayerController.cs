@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     //weak      [1]
     //buffed    [2]
 
-    void Start()
+    private void Awake()
     {
         //set Player instance
         if (_playerInstance == null)
@@ -65,7 +65,10 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
 
+    void Start()
+    {
         //set startup variables
         isSiphoning = false;
         playerWeak = false;
@@ -101,9 +104,10 @@ public class PlayerController : MonoBehaviour
             playerBuffed = false;
             UpdateVolume(volumeProfiles[0]);
         }
-        else if (vitality > 0f && vitality <= 33.3f)
+        else if (vitality > 0f && vitality <= 39f)
         {
             playerBuffed = true;
+            Debug.Log("buffed");
         }
 
         if (playerWeak)
@@ -255,6 +259,17 @@ public class PlayerController : MonoBehaviour
         else
         {
             isSiphoning = false;
+        }
+    }
+    
+    private void OnTriggerStay(Collider other)
+    {
+        Enemy enemy = other.GetComponentInParent<Enemy>();
+
+        if (enemy != null && enemy.canDealDamage && enemy.canDealDamage)
+        {
+            StartCoroutine(enemy.dealDamage());
+            vitality -= enemy.damage;
         }
     }
 }

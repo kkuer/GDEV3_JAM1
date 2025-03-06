@@ -651,6 +651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladeHits: []
   baseDamage: 20
+  weakDamage: 10
+  buffedDamage: 75
 --- !u!65 &1888512555273701175
 BoxCollider:
   m_ObjectHideFlags: 0
