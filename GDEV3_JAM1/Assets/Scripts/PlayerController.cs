@@ -124,8 +124,6 @@ public class PlayerController : MonoBehaviour
         //vitality inputs
         if (Input.GetKey(KeyCode.Space))
         {
-            //check orb distance
-            //isSiphoning = true;
             siphonByDistance();
         }
         if (Input.GetKeyUp(KeyCode.Space))
