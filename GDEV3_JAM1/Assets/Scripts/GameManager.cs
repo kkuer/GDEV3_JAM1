@@ -18,15 +18,18 @@ public class GameManager : MonoBehaviour
     public List<GameObject> spawnPositions;
 
     public bool gameActive;
-    private bool vitalityScoreAdded;
+    private bool vitalityScoreAdjusted;
 
     public float gameTimer = 300;
 
     public TMP_Text timerText;
     public TMP_Text scoreText;
     public TMP_Text finalScoreText;
+    public GameObject endScreen;
 
     public PlayerController player;
+
+    private bool enemySpawnable;
 
     private void Awake()
     {
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviour
         score = 0;
 
         //allow vitality score adding
-        vitalityScoreAdded = false;
+        vitalityScoreAdjusted = false;
     }
 
     private void Update()
@@ -63,17 +66,22 @@ public class GameManager : MonoBehaviour
             gameTimer -= Time.deltaTime;
             updateTimer(gameTimer);
 
+            //spawn enemies
+            if (enemySpawnable && gameActive)
+            {
+
+            }
+
             //add current vitality to score
-            if (player.vitality >= 0 && !vitalityScoreAdded)
+            if (player.vitality >= 0 && !vitalityScoreAdjusted)
             {
                 StartCoroutine(addVitalityScore());
             }
-            else if (player.vitality <= 0 && !vitalityScoreAdded)
+            else if (player.vitality <= 0 && !vitalityScoreAdjusted)
             {
                 if (score > 0)
                 {
-                    int vitalityScore = Mathf.FloorToInt(Time.deltaTime * 5);
-                    removeScore(vitalityScore);
+                    StartCoroutine(removeVitalityScore());
                 }
                 else
                 {
@@ -85,19 +93,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("time up");
             gameTimer = 0;
+            finalScore = score;
+            endScreen.SetActive(true);
             gameActive = false;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     public float addScore(int scoreToAdd)
     {
         score += scoreToAdd;
-        string formattedScore = score.ToString("D6");
+        string formattedScore = score.ToString("D8");
         scoreText.text = $"{formattedScore}";
         return score;
     }
@@ -105,7 +110,7 @@ public class GameManager : MonoBehaviour
     public float removeScore(int scoreToRemove)
     {
         score -= scoreToRemove;
-        string formattedScore = score.ToString("D6");
+        string formattedScore = score.ToString("D8");
         scoreText.text = $"{formattedScore}";
         return score;
     }
@@ -122,10 +127,29 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator addVitalityScore()
     {
-        vitalityScoreAdded = true;
-        int vitalityScore = Mathf.FloorToInt(player.vitality / 10);
+        vitalityScoreAdjusted = true;
+        int vitalityScore = Mathf.RoundToInt(player.vitality / 10);
         addScore(vitalityScore);
         yield return new WaitForSeconds(1f);
-        vitalityScoreAdded = false;
+        vitalityScoreAdjusted = false;
+    }
+
+    public IEnumerator removeVitalityScore()
+    {
+        vitalityScoreAdjusted = true;
+        removeScore(1);
+        yield return new WaitForSeconds(0.125f);
+        vitalityScoreAdjusted = false;
+    }
+
+    public IEnumerator spawnEnemyTest()
+    {
+        enemySpawnable = false;
+
+        GameObject randomEnemy = enemies[Random.Range(0, enemies.Count)];
+        GameObject randomSpawn = spawnPositions[Random.Range(0, spawnPositions.Count)];
+        yield return new WaitForSeconds(2f);
+
+        enemySpawnable = true;
     }
 }

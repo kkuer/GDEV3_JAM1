@@ -111,17 +111,17 @@ public class Enemy : MonoBehaviour
             {
                 blade.bladeHits.Add(gameObject);
 
-                if (player.playerBuffed)
+                if (player.playerState == state.Normal)
+                {
+                    takeDamage(blade.baseDamage);
+                }
+                else if (player.playerState == state.Buffed)
                 {
                     takeDamage(blade.buffedDamage);
                 }
-                else if (player.playerWeak)
+                else if (player.playerState == state.Weakened)
                 {
                     takeDamage(blade.weakDamage);
-                }
-                else if (!player.playerBuffed && !player.playerWeak)
-                {
-                    takeDamage(blade.baseDamage);
                 }
                 gameManager.addScore(25);
             }
@@ -131,17 +131,17 @@ public class Enemy : MonoBehaviour
                 {
                     if (hit != gameObject)
                     {
-                        if (player.playerBuffed)
+                        if (player.playerState == state.Normal)
+                        {
+                            takeDamage(blade.baseDamage);
+                        }
+                        else if (player.playerState == state.Buffed)
                         {
                             takeDamage(blade.buffedDamage);
                         }
-                        else if (player.playerWeak)
+                        else if (player.playerState == state.Weakened)
                         {
                             takeDamage(blade.weakDamage);
-                        }
-                        else if (!player.playerBuffed && !player.playerWeak)
-                        {
-                            takeDamage(blade.baseDamage);
                         }
                         gameManager.addScore(25);
                     }
@@ -150,17 +150,17 @@ public class Enemy : MonoBehaviour
         }
         else if (projectile != null)
         {
-            if (player.playerBuffed)
+            if (player.playerState == state.Normal)
             {
-                takeDamage(projectile.buffedDamage);
+                takeDamage(blade.baseDamage);
             }
-            else if (player.playerWeak)
+            else if (player.playerState == state.Buffed)
             {
-                takeDamage(projectile.weakDamage);
+                takeDamage(blade.buffedDamage);
             }
-            else if (!player.playerBuffed && !player.playerWeak)
+            else if (player.playerState == state.Weakened)
             {
-                takeDamage(projectile.baseDamage);
+                takeDamage(blade.weakDamage);
             }
             gameManager.addScore(5);
             Destroy(projectile.gameObject);

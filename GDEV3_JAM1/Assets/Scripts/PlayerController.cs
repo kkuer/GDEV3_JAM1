@@ -6,6 +6,12 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 using System;
 using UnityEditor.Experimental.GraphView;
+public enum state
+{
+    Normal,
+    Weakened,
+    Buffed
+}
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,6 +60,8 @@ public class PlayerController : MonoBehaviour
     //weak      [1]
     //buffed    [2]
 
+    public state playerState;
+
     private void Awake()
     {
         //set Player instance
@@ -70,9 +78,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //set startup variables
-        isSiphoning = false;
-        playerWeak = false;
-        isAttacking = false;
+        playerState = state.Normal;
 
         //get components
         rb = GetComponent<Rigidbody>();
@@ -80,49 +86,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //update UI
-        vitalitySlider.value = vitality / 100;
-
-        //update vitality
-        if (isSiphoning && vitality <= 100f)
-        {
-            vitality += Time.deltaTime * defaultVitalityIncreaseRate;
-        }
-        else if (!isSiphoning && vitality >= 0f)
-        {
-            vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
-        }
-
-        if (vitality <= 0f)
-        {
-            playerWeak = true;
-            UpdateVolume(volumeProfiles[1]);
-        }
-        else if (vitality > 0f && vitality >= 33.4f)
-        {
-            playerWeak = false;
-            playerBuffed = false;
-            UpdateVolume(volumeProfiles[0]);
-        }
-        else if (vitality > 0f && vitality <= 39f)
-        {
-            playerBuffed = true;
-            Debug.Log("buffed");
-        }
-
-        if (playerWeak)
-        {
-            moveSpeed = weakMoveSpeed;
-        }
-        else if (!playerWeak && !playerBuffed)
-        {
-            moveSpeed = 500f;
-        }
-        else if (!playerWeak && playerBuffed)
-        {
-            moveSpeed = buffedMoveSpeed;
-        }
-
         //blade swing
         if (currentBlade && isAttacking)
         {
@@ -131,12 +94,16 @@ public class PlayerController : MonoBehaviour
 
         //input
         Vector3 inputMovement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        rb.linearVelocity = inputMovement * Time.deltaTime * moveSpeed;
-        //transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
+        rb.linearVelocity = inputMovement * Time.fixedDeltaTime * moveSpeed;
     }
 
     void Update()
     {
+        updateVitality();
+        managePlayerState();
+
+       
+
         //player aim
         if (playerMesh)
         {
@@ -270,6 +237,55 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(enemy.dealDamage());
             vitality -= enemy.damage;
+        }
+    }
+
+    public void updateVitality()
+    {
+        //update UI
+        vitalitySlider.value = vitality / 100;
+
+        //update vitality
+        if (isSiphoning && vitality <= 100f)
+        {
+            vitality += Time.deltaTime * defaultVitalityIncreaseRate;
+        }
+        else if (!isSiphoning && vitality >= 0f)
+        {
+            vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
+        }
+
+        if (vitality <= 0f)
+        {
+            playerState = state.Weakened;
+            vitality = 0f;
+            UpdateVolume(volumeProfiles[1]);
+        }
+        else if (vitality > 0f && vitality >= 39.3f)
+        {
+            playerState = state.Normal;
+            UpdateVolume(volumeProfiles[0]);
+        }
+        else if (vitality > 0f && vitality <= 39.3f)
+        {
+            playerState = state.Buffed;
+            UpdateVolume(volumeProfiles[2]);
+        }
+    }
+
+    public void managePlayerState()
+    {
+        if (playerState == state.Weakened)
+        {
+            moveSpeed = weakMoveSpeed;
+        }
+        else if (playerState == state.Normal)
+        {
+            moveSpeed = 500f;
+        }
+        else if (playerState == state.Buffed)
+        {
+            moveSpeed = buffedMoveSpeed;
         }
     }
 }
