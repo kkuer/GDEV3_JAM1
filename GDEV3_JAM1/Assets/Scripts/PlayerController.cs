@@ -187,8 +187,8 @@ public class PlayerController : MonoBehaviour
         //partiles enable here
 
         //handle attack logic
-        GameObject projectile = Instantiate(projectilePrefab, bladePivotPoint.position, playerMesh.transform.localRotation);
-        Destroy(projectile, 10f);
+        GameObject projectile = Instantiate(projectilePrefab, bladePivotPoint.position, playerMesh.transform.rotation);
+        Destroy(projectile, 5f);
 
         //wait and reset
         yield return new WaitForSeconds(rangeDuration);

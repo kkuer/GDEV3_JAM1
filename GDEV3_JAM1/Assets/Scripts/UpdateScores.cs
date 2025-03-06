@@ -16,9 +16,12 @@ public class UpdateScores : MonoBehaviour
 
     private void Update()
     {
-        if (gameManager.gameActive == false)
+        if (gameManager.gameActive == false && scoreSubmitted == false)
         {
-            SubmitScore();
+            if (HighScoreHandler._instance.GetMyRank(gameManager.finalScore) >= 0)
+            {
+                SubmitScore();
+            }
         }
     }
 

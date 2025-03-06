@@ -61,6 +61,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+
         if (gameTimer > 0 && gameActive)
         {
             gameTimer -= Time.deltaTime;
@@ -91,9 +97,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("time up");
             gameTimer = 0;
             finalScore = score;
+            finalScoreText.text = finalScore.ToString("D8");
             endScreen.SetActive(true);
             gameActive = false;
         }

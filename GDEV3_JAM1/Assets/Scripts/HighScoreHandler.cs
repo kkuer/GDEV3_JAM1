@@ -117,22 +117,22 @@ public class HighScoreHandler : MonoBehaviour
 
         File.WriteAllText(scoreFilePath, fileContent);
     }
-    //public int GetMyRank(int score)
-    //{
-    //    for (int i = 0; i < _topScores.Count; i++)
-    //    {
-    //        if (score > _topScores[i].Score)
-    //        {
-    //            return i; //this should be the position that the player will be at
-    //        }
-    //    }
+    public int GetMyRank(int score)
+    {
+        for (int i = 0; i < _topScores.Count; i++)
+        {
+            if (score > _topScores[i].Score)
+            {
+                return i; //this should be the position that the player will be at
+            }
+        }
 
-    //    // add me to the botom of the list if the list isnt full yet
-    //    if (_topScores.Count < MaxScoreCount)
-    //    {
-    //        return _topScores.Count;
-    //    }
+        // add me to the botom of the list if the list isnt full yet
+        if (_topScores.Count < MaxScoreCount)
+        {
+            return _topScores.Count;
+        }
 
-    //    return -1; //if i didnt get a high score at all and the lsit is full, give back a -1
-    //}
+        return -1; //if i didnt get a high score at all and the lsit is full, give back a -1
+    }
 }

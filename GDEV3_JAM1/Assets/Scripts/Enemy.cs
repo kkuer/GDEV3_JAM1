@@ -152,15 +152,15 @@ public class Enemy : MonoBehaviour
         {
             if (player.playerState == state.Normal)
             {
-                takeDamage(blade.baseDamage);
+                takeDamage(projectile.baseDamage);
             }
             else if (player.playerState == state.Buffed)
             {
-                takeDamage(blade.buffedDamage);
+                takeDamage(projectile.buffedDamage);
             }
             else if (player.playerState == state.Weakened)
             {
-                takeDamage(blade.weakDamage);
+                takeDamage(projectile.weakDamage);
             }
             gameManager.addScore(5);
             Destroy(projectile.gameObject);
