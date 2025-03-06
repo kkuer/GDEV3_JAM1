@@ -95,9 +95,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4378946777965774598}
+  - component: {fileID: 3387410132639179469}
   - component: {fileID: 3923241729752385821}
   - component: {fileID: 3465145259119058866}
-  - component: {fileID: 3387410132639179469}
   - component: {fileID: 8323745994751667527}
   m_Layer: 10
   m_Name: Projectile
@@ -122,6 +122,23 @@ Transform:
   - {fileID: 7876100222583833090}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3387410132639179469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7746611223239964842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657a505354b618a4bbf8d67e4bda2e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  bulletSpeed: 50
+  baseDamage: 5
+  weakDamage: 2
+  buffedDamage: 12
 --- !u!54 &3923241729752385821
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,23 +187,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.75, y: 0.75, z: 0.75}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3387410132639179469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746611223239964842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 657a505354b618a4bbf8d67e4bda2e2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  bulletSpeed: 50
-  baseDamage: 8
-  weakDamage: 4
-  buffedDamage: 15
 --- !u!96 &8323745994751667527
 TrailRenderer:
   serializedVersion: 3

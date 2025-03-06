@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public Rigidbody rb;
+    private Rigidbody rb;
     [SerializeField] private float bulletSpeed;
 
     public float baseDamage;

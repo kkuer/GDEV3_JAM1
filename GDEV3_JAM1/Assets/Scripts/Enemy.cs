@@ -7,6 +7,7 @@ using Unity.Cinemachine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float health;
+    [SerializeField] private float moveSpeed;
 
     public float damage;
     [SerializeField] private float damageCooldown;
@@ -40,6 +41,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        enemyNavAgent = GetComponent<NavMeshAgent>();
+
         player = PlayerController._playerInstance;
         canDealDamage = true;
 
@@ -55,23 +58,24 @@ public class Enemy : MonoBehaviour
             health = 50;
             healthSlider.maxValue = health / 100;
             scoreToAdd = 25;
+            enemyNavAgent.speed = moveSpeed;
         }
         else if (type == enemyType.Heavy)
         {
             health = 100;
             healthSlider.maxValue = health / 100;
             scoreToAdd = 50;
+            enemyNavAgent.speed = moveSpeed;
         }
         else if (type == enemyType.Light)
         {
             health = 25;
             healthSlider.maxValue = health / 100;
             scoreToAdd = 15;
+            enemyNavAgent.speed = moveSpeed;
         }
 
-        enemyNavAgent = GetComponent<NavMeshAgent>();
-
-        camToLookAt = Camera.main.transform;
+        camToLookAt = Camera.main.gameObject.transform;
     }
 
     private void Update()

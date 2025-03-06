@@ -250,7 +250,6 @@ public class PlayerController : MonoBehaviour
         //update vitality
         if (isSiphoning && vitality <= 100f)
         {
-            Debug.Log(nearbyOrbsAmount);
             vitality += Time.deltaTime * (nearbyOrbsAmount * defaultVitalityIncreaseRate);
         }
         else if (!isSiphoning && vitality >= 0f)

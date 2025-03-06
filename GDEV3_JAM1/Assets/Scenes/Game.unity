@@ -1865,6 +1865,7 @@ MonoBehaviour:
   finalScore: 0
   enemies:
   - {fileID: 7831234497718652309, guid: 8533271793de9c141a453e39714abd29, type: 3}
+  - {fileID: 7831234497718652309, guid: d62c8d247c0220c48ad8743eabdb3258, type: 3}
   spawnPositions:
   - {fileID: 1661928861}
   - {fileID: 1619754823}
@@ -2806,7 +2807,7 @@ Transform:
   m_GameObject: {fileID: 1500503332}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

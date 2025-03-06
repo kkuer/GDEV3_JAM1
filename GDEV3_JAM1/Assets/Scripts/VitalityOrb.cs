@@ -53,7 +53,7 @@ public class VitalityOrb : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (player.isSiphoning)
+        if (player.isSiphoning && siphonable)
         {
             if (siphoningParticles != null && !siphoningParticles.isPlaying)
             {
