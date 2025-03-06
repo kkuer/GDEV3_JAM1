@@ -1876,7 +1876,7 @@ MonoBehaviour:
   - {fileID: 1658288211}
   - {fileID: 582384465}
   gameActive: 1
-  gameTimer: 300
+  gameTimer: 90
   timerText: {fileID: 1844086156}
   scoreText: {fileID: 1392476266}
   finalScoreText: {fileID: 1255287631}
