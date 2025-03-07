@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ShakeBehaviour : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class ShakeBehaviour : MonoBehaviour
 
     private CinemachineCamera cam;
     private float shakeTimer;
+
+    public GameObject flashBasic;
+    public GameObject flashCenter;
+    public GameObject flashCorners;
 
     private void Awake()
     {
@@ -47,32 +52,30 @@ public class ShakeBehaviour : MonoBehaviour
     public IEnumerator screenFlash(Color color)
     {
         Debug.Log("Flashed");
-        //set image color
+        flashCenter.GetComponent<Image>().color = color;
+        flashCorners.GetComponent<Image>().color = color;
 
-        //turn on middle
-
-        yield return new WaitForSeconds(0.05f);
-
-        //turn on outside
+        flashCenter.SetActive(true);
 
         yield return new WaitForSeconds(0.05f);
 
-        //delete middle
+        flashCorners.SetActive(true);
+        flashCenter.SetActive(false);
 
         yield return new WaitForSeconds(0.05f);
 
-        //delete outside
+        flashCorners.SetActive(false);
     }
 
     public IEnumerator quickFlash(Color color)
     {
         Debug.Log("FlashedQuick");
-        //set image color
+        flashBasic.GetComponent<Image>().color = color;
 
-        //turn on
+        flashBasic.SetActive(true);
 
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.02f);
 
-        //turn off
+        flashBasic.SetActive(false);
     }
 }

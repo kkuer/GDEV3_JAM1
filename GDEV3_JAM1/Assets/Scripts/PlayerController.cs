@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
 
         //visuals
-        ShakeBehaviour._instance.screenFlash(Color.white);
+        StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
 
         GameObject slash = Instantiate(VFX_SLASH, bladePivotPoint.position, bladePivotPoint.rotation);
         GameObject blade = Instantiate(bladePrefab, Vector3.zero, Quaternion.identity, bladePivotPoint);
@@ -178,9 +178,9 @@ public class PlayerController : MonoBehaviour
         //state logic
         isAttacking = true;
 
-        ShakeBehaviour._instance.quickFlash(Color.white);
-
         //visuals
+        StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
+
         //partiles enable here
 
         //handle attack logic
@@ -240,7 +240,8 @@ public class PlayerController : MonoBehaviour
             ShakeBehaviour._instance.screenFlash(Color.red);
 
             StartCoroutine(enemy.dealDamage());
-
+            ShakeBehaviour._instance.shakeCam(2f, 0.2f);
+            StartCoroutine(ShakeBehaviour._instance.screenFlash(Color.red));
             vitality -= enemy.damage;
         }
     }

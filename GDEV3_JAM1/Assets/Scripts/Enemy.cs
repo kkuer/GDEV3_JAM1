@@ -170,6 +170,8 @@ public class Enemy : MonoBehaviour
                     }
                 }
             }
+
+            //hit particles here
         }
         else if (projectile != null)
         {
@@ -185,7 +187,11 @@ public class Enemy : MonoBehaviour
             {
                 takeDamage(projectile.weakDamage);
             }
+
             gameManager.addScore(5);
+
+            //hit particles here
+
             Destroy(projectile.gameObject);
         }
     }
