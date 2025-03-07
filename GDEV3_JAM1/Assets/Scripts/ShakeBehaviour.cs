@@ -51,7 +51,6 @@ public class ShakeBehaviour : MonoBehaviour
 
     public IEnumerator screenFlash(Color color)
     {
-        Debug.Log("Flashed");
         flashCenter.GetComponent<Image>().color = color;
         flashCorners.GetComponent<Image>().color = color;
 
@@ -69,7 +68,6 @@ public class ShakeBehaviour : MonoBehaviour
 
     public IEnumerator quickFlash(Color color)
     {
-        Debug.Log("FlashedQuick");
         flashBasic.GetComponent<Image>().color = color;
 
         flashBasic.SetActive(true);

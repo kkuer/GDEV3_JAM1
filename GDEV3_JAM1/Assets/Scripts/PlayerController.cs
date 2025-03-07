@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
 
         //visuals
-        StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
+        //StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
 
         //partiles enable here
 

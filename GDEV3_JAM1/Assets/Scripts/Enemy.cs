@@ -100,14 +100,13 @@ public class Enemy : MonoBehaviour
     {
         health -= damageToTake;
 
-        //damage particles
-
+        //damage particles here
 
         if (health < 0f)
         {
             health = 0f;
-            //death particles
 
+            //death particles here
 
             //essence particles
             Instantiate(essenceParticles, gameObject.transform.position, Quaternion.identity);

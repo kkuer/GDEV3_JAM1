@@ -3525,7 +3525,7 @@ MonoBehaviour:
   siphonRadius: 8
   playerMesh: {fileID: 928143388}
   cam: {fileID: 330585545}
-  defaultVitalityDecreaseRate: 3
+  defaultVitalityDecreaseRate: 2.5
   defaultVitalityIncreaseRate: 6
   moveSpeed: 500
   buffedMoveSpeed: 750
