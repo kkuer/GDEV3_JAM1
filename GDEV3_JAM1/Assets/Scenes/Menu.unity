@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.078431375}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -824,10 +824,10 @@ RectTransform:
   - {fileID: 1606309351}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: 0}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &193193990
 MonoBehaviour:
@@ -961,10 +961,10 @@ RectTransform:
   - {fileID: 138257601}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -300}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &220308060
 MonoBehaviour:
@@ -1082,7 +1082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &309316096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1178,10 +1178,10 @@ RectTransform:
   - {fileID: 447720522}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -100}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &438103606
 MonoBehaviour:
@@ -2157,7 +2157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -475, y: -106.5}
+  m_AnchoredPosition: {x: 475, y: -106.5}
   m_SizeDelta: {x: 900, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &577609206
@@ -2231,10 +2231,10 @@ RectTransform:
   - {fileID: 2065169592}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -600}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &607978714
 MonoBehaviour:
@@ -4053,7 +4053,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ABILITY 1
+  m_text: HEAL ABILITY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
   m_sharedMaterial: {fileID: -2613230665113120345, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
@@ -4301,10 +4301,10 @@ RectTransform:
   - {fileID: 765144406}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -400}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1640818684
 MonoBehaviour:
@@ -4441,7 +4441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 475, y: -106.5}
+  m_AnchoredPosition: {x: -475, y: -106.5}
   m_SizeDelta: {x: 900, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1682599623
@@ -4515,10 +4515,10 @@ RectTransform:
   - {fileID: 1587996613}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -500}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1772983957
 MonoBehaviour:
@@ -4679,11 +4679,11 @@ MonoBehaviour:
   m_text: In <color=red>NECRO HARVESTER</color>, your <color=green>vitality</color>
     bar will consistently drop over time, so eliminate enemies to harvest their vitality
     using <b>[SPACE]</b>. Keep in mind, you cannot <color=#82cd7e>attack</color>
-    while siphoning vitality, and vice versa. When dipping below 30% vitality, you
-    will enter an <color=red>adrenaline</color> state, dealing buffed damage. But
-    be careful, as if you drop below 0% vitality, you will become extremely weak.
-    Get score by dealing damage and keeping your vitality level high, and survive
-    until dawn breaks.           (1m 30s)
+    while <color=#82cd7e>siphoning </color>vitality, and vice versa. When dipping
+    below <color=red>30%</color> vitality, you will enter an <color=red>adrenaline</color>
+    state, dealing buffed damage. But be careful, as if you drop below <color=red>0%</color>
+    vitality, you will become <color=red>extremely weak</color>. Get score by dealing
+    damage and keeping your vitality level high, and survive until dawn breaks.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
   m_sharedMaterial: {fileID: -2613230665113120345, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
@@ -5200,7 +5200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ABILITY 2
+  m_text: A.O.E. ABILITY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
   m_sharedMaterial: {fileID: -2613230665113120345, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
@@ -5387,10 +5387,10 @@ RectTransform:
   - {fileID: 2040842031}
   m_Father: {fileID: 1068479460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -200}
+  m_SizeDelta: {x: 900, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2144410841
 MonoBehaviour:

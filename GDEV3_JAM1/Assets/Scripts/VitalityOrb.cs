@@ -48,7 +48,7 @@ public class VitalityOrb : MonoBehaviour
         if (gameObject.transform.localScale.z <= 0.1f)
         {
             Instantiate(expireParticles, gameObject.transform.position, Quaternion.identity);
-            //orb disappear sfx
+            SoundManager._instance.POPTWINKLE();
             Destroy(gameObject);
         }
 
@@ -91,7 +91,10 @@ public class VitalityOrb : MonoBehaviour
 
     IEnumerator Lifetime()
     {
+        StartCoroutine(SoundManager._instance.SIPHONSPAWN());
+        SoundManager._instance.SIPHONSPAWN();
         yield return new WaitForSeconds(2f);
+        Instantiate(expireParticles, gameObject.transform.position, Quaternion.identity);
         siphonable = true;
     }
 }

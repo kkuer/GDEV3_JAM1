@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
     public Color adrenalineVitalityColor;
 
     public GameObject bloodParticles;
+    public GameObject shootParticles;
 
     private void Awake()
     {
@@ -153,8 +154,11 @@ public class PlayerController : MonoBehaviour
                 GameManager._gmInstance.qCooldownTimer = 20;
 
                 //add set vitality amount
-                vitality += 40f;
+                vitality += 50f;
                 StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.green));
+
+                //sounds
+                SoundManager._instance.HEALABIL();
             }
         }
         if (Input.GetKeyDown(KeyCode.E))
@@ -170,6 +174,9 @@ public class PlayerController : MonoBehaviour
                 GameObject aoeBurst = Instantiate(VFX_AOE, bladePivotPoint.position, bladePivotPoint.rotation);
                 StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
                 Destroy(aoeBurst, 2f);
+
+                //sounds
+                SoundManager._instance.AOE();
             }
         }
     }
@@ -199,8 +206,9 @@ public class PlayerController : MonoBehaviour
         //state logic
         isAttacking = true;
 
-        //visuals
+        //visuals and audio
         StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
+        SoundManager._instance.SWING();
 
         GameObject slash = Instantiate(VFX_SLASH, bladePivotPoint.position, bladePivotPoint.rotation);
         GameObject blade = Instantiate(bladePrefab, Vector3.zero, Quaternion.identity, bladePivotPoint);
@@ -226,10 +234,9 @@ public class PlayerController : MonoBehaviour
         //state logic
         isAttacking = true;
 
-        //visuals
-        //StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
-
-        //partiles enable here
+        //visuals and audio
+        GameObject projParticles = Instantiate(shootParticles, bladePivotPoint.position, playerMesh.transform.rotation);
+        SoundManager._instance.SHOOT();
 
         //handle attack logic
         GameObject projectile = Instantiate(projectilePrefab, bladePivotPoint.position, playerMesh.transform.rotation);
@@ -291,9 +298,16 @@ public class PlayerController : MonoBehaviour
 
             if (enemy != null && !damagedEnemies.Contains(enemy))
             {
-                enemy.takeDamage(80f);
+                if (playerState == state.Normal || playerState == state.Weakened)
+                {
+                    enemy.takeDamage(80f);
+                }
+                else if (playerState == state.Buffed)
+                {
+                    enemy.takeDamage(150f);
+                }
+                GameObject blood = Instantiate(bloodParticles, enemy.gameObject.transform.position, gameObject.transform.rotation);
                 damagedEnemies.Add(enemy);
-                Debug.Log("called");
             }
         }
     }

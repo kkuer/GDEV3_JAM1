@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject VFX_SLASH;
     public GameObject bloodParticles;
+    public GameObject bloodParticlesSmall;
 
     public enum enemyType
     {
@@ -134,6 +135,9 @@ public class Enemy : MonoBehaviour
         {
             if (blade.bladeHits.Count == 0)
             {
+                SoundManager._instance.SWINGHIT();
+                SoundManager._instance.HIT();
+
                 blade.bladeHits.Add(gameObject);
 
                 if (player.playerState == state.Normal)
@@ -153,6 +157,9 @@ public class Enemy : MonoBehaviour
             }
             else if (blade.bladeHits.Count >= 1)
             {
+                SoundManager._instance.SWINGHIT();
+                SoundManager._instance.HIT();
+
                 foreach (GameObject hit in blade.bladeHits)
                 {
                     if (hit != gameObject)
@@ -194,7 +201,9 @@ public class Enemy : MonoBehaviour
 
             gameManager.addScore(5);
 
-            GameObject blood = Instantiate(bloodParticles, other.ClosestPoint(transform.position), gameObject.transform.rotation);
+            GameObject bloodSmall = Instantiate(bloodParticlesSmall, other.ClosestPoint(transform.position), gameObject.transform.rotation);
+
+            SoundManager._instance.HIT();
 
             Destroy(projectile.gameObject);
         }
@@ -204,6 +213,7 @@ public class Enemy : MonoBehaviour
     {
         canDealDamage = false;
         GameObject slash = Instantiate(VFX_SLASH, gameObject.transform.position, gameObject.transform.rotation);
+        SoundManager._instance.HIT();
         Destroy(slash, 2f);
         yield return new WaitForSeconds(damageCooldown);
         canDealDamage = true;

@@ -497,6 +497,7 @@ MonoBehaviour:
   healthBar: {fileID: 8964004943308328575}
   VFX_SLASH: {fileID: 3799798967871878681, guid: 76e8c6561ca99144da02e5d52983b475, type: 3}
   bloodParticles: {fileID: 221883064778875085, guid: e478cf9b0a351e245b48223aca5ae203, type: 3}
+  bloodParticlesSmall: {fileID: 221883064778875085, guid: 30cd034929f1b7541b05ee3dc59c3943, type: 3}
   type: 1
 --- !u!195 &4750091909406757427
 NavMeshAgent:

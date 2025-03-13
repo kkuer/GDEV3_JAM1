@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             }
 
             //add current vitality to score
-            if (player.vitality >= 0 && !vitalityScoreAdjusted)
+            if (player.vitality > 0 && !vitalityScoreAdjusted)
             {
                 StartCoroutine(addVitalityScore());
             }
@@ -127,6 +127,7 @@ public class GameManager : MonoBehaviour
             finalScoreText.text = finalScore.ToString("D8");
             endScreen.SetActive(true);
             gameActive = false;
+            Time.timeScale = 0;
         }
 
         if (qCooldownTimer > 0 && gameActive)
@@ -199,7 +200,7 @@ public class GameManager : MonoBehaviour
     {
         vitalityScoreAdjusted = true;
         removeScore(1);
-        yield return new WaitForSeconds(0.125f);
+        yield return new WaitForSeconds(0.0625f);
         vitalityScoreAdjusted = false;
     }
 
