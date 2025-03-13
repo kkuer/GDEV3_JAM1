@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Time.timeScale = 1;
     }
 
     private void Start()
