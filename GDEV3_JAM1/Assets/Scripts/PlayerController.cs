@@ -23,7 +23,11 @@ public class PlayerController : MonoBehaviour
     public bool isSiphoning;
     public bool isAttacking;
 
+    public bool canUseQ;
+    public bool canUseE;
+
     public float siphonRadius;
+    public float aoeRadius;
 
     public GameObject playerMesh;
     private Rigidbody rb;
@@ -44,6 +48,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Quaternion bladeTargetRotation;
 
     public GameObject VFX_SLASH;
+    public GameObject VFX_AOE;
+
     public GameObject bladeHolstered;
     public GameObject bladePrefab;
     public Transform bladePivotPoint;
@@ -62,6 +68,12 @@ public class PlayerController : MonoBehaviour
     public state playerState;
 
     public int nearbyOrbsAmount;
+
+    public Image vitalityBarImage;
+    public Color normalVitalityColor;
+    public Color adrenalineVitalityColor;
+
+    public GameObject bloodParticles;
 
     private void Awake()
     {
@@ -130,6 +142,42 @@ public class PlayerController : MonoBehaviour
         {
             isSiphoning = false;
         }
+
+        //ability inputs
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            //q
+            if (canUseQ)
+            {
+                ShakeBehaviour._instance.shakeCam(2f, 0.1f);
+                GameManager._gmInstance.qCooldownTimer = 20;
+
+                //add set vitality amount
+                vitality += 40f;
+                StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.green));
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            //e
+            if (canUseE && !isSiphoning)
+            {
+                ShakeBehaviour._instance.shakeCam(2f, 0.15f);
+                GameManager._gmInstance.eCooldownTimer = 25;
+
+                //aoe logic
+                aoeAttack();
+                GameObject aoeBurst = Instantiate(VFX_AOE, bladePivotPoint.position, bladePivotPoint.rotation);
+                StartCoroutine(ShakeBehaviour._instance.quickFlash(Color.white));
+                Destroy(aoeBurst, 2f);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, aoeRadius);
     }
 
     public void TrackMouse()
@@ -230,6 +278,25 @@ public class PlayerController : MonoBehaviour
 
         nearbyOrbsAmount = orbsInRange;
     }
+
+    private void aoeAttack()
+    {
+        Collider[] nearbyEnemies = Physics.OverlapSphere(gameObject.transform.position, aoeRadius);
+
+        HashSet<Enemy> damagedEnemies = new HashSet<Enemy>();
+
+        foreach (var collider in nearbyEnemies)
+        {
+            Enemy enemy = collider.GetComponentInParent<Enemy>();
+
+            if (enemy != null && !damagedEnemies.Contains(enemy))
+            {
+                enemy.takeDamage(80f);
+                damagedEnemies.Add(enemy);
+                Debug.Log("called");
+            }
+        }
+    }
     
     private void OnTriggerStay(Collider other)
     {
@@ -240,6 +307,7 @@ public class PlayerController : MonoBehaviour
             ShakeBehaviour._instance.screenFlash(Color.red);
 
             StartCoroutine(enemy.dealDamage());
+            GameObject blood = Instantiate(bloodParticles, other.ClosestPoint(transform.position), gameObject.transform.rotation);
             ShakeBehaviour._instance.shakeCam(2f, 0.2f);
             StartCoroutine(ShakeBehaviour._instance.screenFlash(Color.red));
             vitality -= enemy.damage;
@@ -259,6 +327,10 @@ public class PlayerController : MonoBehaviour
         else if (!isSiphoning && vitality >= 0f)
         {
             vitality -= Time.deltaTime * defaultVitalityDecreaseRate;
+            if (vitality >= 100f)
+            {
+                vitality = 100f;
+            }
         }
 
         if (vitality <= 0f)
@@ -271,11 +343,13 @@ public class PlayerController : MonoBehaviour
         {
             playerState = state.Normal;
             UpdateVolume(volumeProfiles[0]);
+            vitalityBarImage.color = normalVitalityColor;
         }
         else if (vitality > 0f && vitality <= 39.3f)
         {
             playerState = state.Buffed;
             UpdateVolume(volumeProfiles[2]);
+            vitalityBarImage.color = adrenalineVitalityColor;
         }
         else if (vitality >= 100f)
         {

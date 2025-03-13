@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Threading;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,10 +23,22 @@ public class GameManager : MonoBehaviour
 
     public float gameTimer = 300;
 
+    public float qCooldownTimer;
+    public float eCooldownTimer;
+
     public TMP_Text timerText;
     public TMP_Text scoreText;
     public TMP_Text finalScoreText;
     public GameObject endScreen;
+
+    public Slider qSlider;
+    public Slider eSlider;
+
+    public Image qImage;
+    public Image eImage;
+    public Color inactiveColor;
+
+    public Color timerLow;
 
     public PlayerController player;
 
@@ -75,6 +88,15 @@ public class GameManager : MonoBehaviour
             gameTimer -= Time.deltaTime;
             updateTimer(gameTimer);
 
+            if (gameTimer <= 10)
+            {
+                timerText.color = timerLow;
+            }
+            else
+            {
+                timerText.color = Color.white;
+            }
+
             //spawn enemies
             if (enemySpawnable && gameActive)
             {
@@ -106,12 +128,42 @@ public class GameManager : MonoBehaviour
             endScreen.SetActive(true);
             gameActive = false;
         }
+
+        if (qCooldownTimer > 0 && gameActive)
+        {
+            qCooldownTimer -= Time.deltaTime;
+            PlayerController._playerInstance.canUseQ = false;
+            qSlider.value = qCooldownTimer / 100;
+            qImage.color = inactiveColor;
+        }
+        else if (qCooldownTimer <= 0 && gameActive)
+        {
+            qCooldownTimer = 0;
+            PlayerController._playerInstance.canUseQ = true;
+            qSlider.value = 0;
+            qImage.color = Color.white;
+        }
+
+        if (eCooldownTimer > 0 && gameActive)
+        {
+            eCooldownTimer -= Time.deltaTime;
+            PlayerController._playerInstance.canUseE = false;
+            eSlider.value = eCooldownTimer / 100;
+            eImage.color = inactiveColor;
+        }
+        else if (eCooldownTimer <= 0 && gameActive)
+        {
+            eCooldownTimer = 0;
+            PlayerController._playerInstance.canUseE = true;
+            eSlider.value = 0;
+            eImage.color = Color.white;
+        }
     }
 
     public float addScore(int scoreToAdd)
     {
         score += scoreToAdd;
-        string formattedScore = score.ToString("D8");
+        string formattedScore = score.ToString("D6");
         scoreText.text = $"{formattedScore}";
         return score;
     }
@@ -119,7 +171,7 @@ public class GameManager : MonoBehaviour
     public float removeScore(int scoreToRemove)
     {
         score -= scoreToRemove;
-        string formattedScore = score.ToString("D8");
+        string formattedScore = score.ToString("D6");
         scoreText.text = $"{formattedScore}";
         return score;
     }

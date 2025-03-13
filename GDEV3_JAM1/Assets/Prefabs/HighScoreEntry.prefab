@@ -119,7 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NameLabel: {fileID: 7344400111471558104}
   ScoreLabel: {fileID: 4214171115954082755}
-  rankLabel: {fileID: 0}
 --- !u!1 &6018040797424704565
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,10 +184,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 00000000
+  m_text: 000000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
-  m_sharedMaterial: {fileID: -2613230665113120345, guid: 9308a7f17143d3946a68b3b4087f197b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e1c72672a51d564086b4b94b8fb5ba3, type: 2}
+  m_sharedMaterial: {fileID: 2782040880692895997, guid: 9e1c72672a51d564086b4b94b8fb5ba3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -212,8 +211,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

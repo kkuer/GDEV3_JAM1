@@ -9,6 +9,6 @@ public class ScoreBoardEntry : MonoBehaviour
     public void Setup(HighScoreHandler.NameAndScore s, int rank)
     {
         NameLabel.text = s.Name;
-        ScoreLabel.text = s.Score.ToString("D8");
+        ScoreLabel.text = s.Score.ToString("D6");
     }
 }

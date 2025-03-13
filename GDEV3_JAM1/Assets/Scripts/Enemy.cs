@@ -31,6 +31,9 @@ public class Enemy : MonoBehaviour
 
     public Transform healthBar;
 
+    public GameObject VFX_SLASH;
+    public GameObject bloodParticles;
+
     public enum enemyType
     {
         Standard,
@@ -146,6 +149,7 @@ public class Enemy : MonoBehaviour
                     takeDamage(blade.weakDamage);
                 }
                 gameManager.addScore(25);
+                GameObject blood = Instantiate(bloodParticles, other.ClosestPoint(transform.position), gameObject.transform.rotation);
             }
             else if (blade.bladeHits.Count >= 1)
             {
@@ -166,6 +170,7 @@ public class Enemy : MonoBehaviour
                             takeDamage(blade.weakDamage);
                         }
                         gameManager.addScore(25);
+                        GameObject blood = Instantiate(bloodParticles, other.ClosestPoint(transform.position), gameObject.transform.rotation);
                     }
                 }
             }
@@ -189,7 +194,7 @@ public class Enemy : MonoBehaviour
 
             gameManager.addScore(5);
 
-            //hit particles here
+            GameObject blood = Instantiate(bloodParticles, other.ClosestPoint(transform.position), gameObject.transform.rotation);
 
             Destroy(projectile.gameObject);
         }
@@ -198,6 +203,8 @@ public class Enemy : MonoBehaviour
     public IEnumerator dealDamage()
     {
         canDealDamage = false;
+        GameObject slash = Instantiate(VFX_SLASH, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(slash, 2f);
         yield return new WaitForSeconds(damageCooldown);
         canDealDamage = true;
     }

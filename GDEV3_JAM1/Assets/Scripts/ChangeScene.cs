@@ -12,4 +12,9 @@ public class ChangeScene : MonoBehaviour
         Debug.Log(MenuHandler._instance.initials);
         SceneManager.LoadScene(1);
     }
+
+    public void quitGame()
+    {
+        Application.Quit();
+    }
 }
